@@ -10,11 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -22,14 +18,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,20 +41,19 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Integer.parseInt;
+import static com.example.min0962.googlemap.login.Constants.micro;
 
+//import androidx.annotation.NonNull;
 
 public class MapsActivity extends FragmentActivity
         implements OnMapReadyCallback,
@@ -68,6 +68,7 @@ public class MapsActivity extends FragmentActivity
     double mLongitude; //경도
     private GpsInfo gps;
     private GoogleApiClient mGoogleApiClient = null;
+
 
     TextView tv_mylocate;
     TextView textViewJson;
@@ -87,6 +88,7 @@ public class MapsActivity extends FragmentActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //지오코딩 - 함수로연결햇음
 
         //디바이스 토큰 값 확인-----------
         try {
@@ -99,7 +101,6 @@ public class MapsActivity extends FragmentActivity
 
 
 
-        //지오코딩 - 함수로연결햇음
         //-------------------------------------------
         try {
             String token = FirebaseInstanceId.getInstance().getToken();
@@ -120,7 +121,7 @@ public class MapsActivity extends FragmentActivity
             @Override
             public void onClick(View v) {
                 sendRequest();
-                temp.setVisibility(View.VISIBLE);
+            //    temp.setVisibility(View.VISIBLE);
 
 
             }
@@ -163,7 +164,7 @@ public class MapsActivity extends FragmentActivity
 
         } else {
             // GPS 를 사용할수 없으므로
-            gps.showSettingsAlert(); //확인한다음, 만약에 ON햇으면 가져올 수 있으면 보여줘야한다. -> 미해결
+            gps.showSettingsAlert(); //gps사용허가할 수 있는 창을 만들어주고 허가하면 서비스한다
             if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             {
                 double latitude = gps.getLatitude();
@@ -188,6 +189,12 @@ public class MapsActivity extends FragmentActivity
         String url=getResources().getString(R.string.stations_url);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
+
+        println("string request들어가기전 \n");
+
+
+      //  StringRequest request2=new StringRequest(){}
+
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
@@ -196,6 +203,7 @@ public class MapsActivity extends FragmentActivity
                     @Override
                     public void onResponse(String response) {
                       //  println("응답 ->"+response);
+                     //   Log.d("Response response", response.toString());
                         println("응답 -> \n");
                         processResponse(response);
                     }
@@ -204,9 +212,14 @@ public class MapsActivity extends FragmentActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         println("에러"+error.getMessage());
+                        Log.d("Network Fail ","reason "+error.toString());
+
                         //Null이면, 받아온값이 없다는것. url이 잘못된 경우가 많음
                         //또는 와이파이가 연결되지않은 경우
-
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null) {
+                            Log.e("Status code", String.valueOf(networkResponse.statusCode));
+                        }
                     }
                 }
         ) {
@@ -216,11 +229,28 @@ public class MapsActivity extends FragmentActivity
                 return params;
             }
         };//응답을 문자열로 받아서 넣어달라
+
+
+        //error.toString()으로 timeout되서 volley가 서버연동 못하는걸 알게됬음..하 ㅎ미들어 슈발
+        request.setRetryPolicy(new com.android.volley.DefaultRetryPolicy(
+
+                20000 ,
+
+                com.android.volley.DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+
+                com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         request.setShouldCache(false);//이전결과가 잇더라도 새로요청해서 받는다.
         requestQueue.add(request);
         println("요청 보냄");//요청보냇다는걸 먼저보내고, 응답을 받으면 Listener가 호출이되고 그때 응답처리해준다
     }
     public void processResponse(String response){
+
+        Toast.makeText(
+                getApplicationContext(),
+                "processResponse입니다",
+                Toast.LENGTH_LONG).show();
+
 
         //gson여기서 초기에 선언을 해주었었음Z
         //얘는 전체를 받아오는거고,
@@ -240,6 +270,17 @@ public class MapsActivity extends FragmentActivity
         List<GpsLists> gpsArray=new ArrayList<GpsLists>();
         // 위에꺼 안되면 이걸로 해보자 ArrayList<GpsLists> a=new ArrayList<GpsLists>();
 
+        MarkerOptions marker = new MarkerOptions();
+
+        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.marker);
+        Bitmap b=bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
+
+
+
+
+
+
         for(int i=0; i<stationList.location.size();i++)
         {
 
@@ -247,17 +288,37 @@ public class MapsActivity extends FragmentActivity
             double px=stationList.location.get(i).x_location_info;
             double py=stationList.location.get(i).y_location_info;
 
-            int pdust=stationList.location  .get(i).dust;
-            String stringdust= Integer.toString(pdust);
 
+
+
+            double pdust=stationList.location  .get(i).dust;
+            String stringdust= Double.toString(pdust);
 
             LatLng tempStation = new LatLng(px , py); //측정소 위치값
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Micro는"+micro,
+                    Toast.LENGTH_LONG).show();
 
-            if(pdust>30) //미세먼지수치가 높은경우
-                mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            else //미세먼지수치가 낮은경
-               mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
+
+
+            if(pname.equals("미세먼지 측정기기"))
+            {
+                marker.position(new LatLng(px, py)).title(pname).snippet(stringdust).alpha(0.5f).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                mMap.addMarker(marker).showInfoWindow(); // 마커추가,화면에출력
+//                mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+            }
+
+            else{
+                if(pdust> micro) //미세먼지수치가 높은경우
+                    mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                else //미세먼지수치가 낮은경
+                    mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+
+            }
 
 
             gpsArray.add(new GpsLists(px,py));
@@ -266,7 +327,7 @@ public class MapsActivity extends FragmentActivity
         }
         String gps_results=gson.toJson(new GpsListClass(gpsArray));
 
-        println("수집한 gps값들 : \n"+gps_results + "\n");
+    //    println("수집한 gps값들 : \n"+gps_results + "\n");
 
 
 
@@ -296,10 +357,8 @@ public class MapsActivity extends FragmentActivity
 
 
 
-
-            final Geocoder geocoder = new Geocoder(this);
-
             //지오코딩
+            final Geocoder geocoder = new Geocoder(this);
             List<Address> list = null;
             try {
                 double d1 = mLatitude;
@@ -377,7 +436,10 @@ public class MapsActivity extends FragmentActivity
 
         //현재 나의 위치
         LatLng myPosition = new LatLng(mLatitude , mLongitude);
-        mMap.addMarker(new MarkerOptions().position(myPosition).title("내 위치").snippet("My Position").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        mMap.addMarker(new MarkerOptions().position(myPosition).
+                title("내 위치").snippet("My Position").
+                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
 
         //정가운데 카메라뷰, 정가운데
@@ -458,17 +520,6 @@ public class MapsActivity extends FragmentActivity
     public void createMarker(){
 
         //marker.tag를 나중에 미세먼지로 불러오고, 그걸 누르면 자세히 보여주는 식으로 할 수 있다.
-        //MarkerOptions marker = new MarkerOptions();
-
-        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.marker);
-        Bitmap b=bitmapdraw.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
-
-//        marker .position(new LatLng(37.555744, 125)).title("모르는 곳").snippet("I don't know").alpha(0.5f).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-        //  mMap.addMarker(marker).showInfoWindow(); // 마커추가,화면에출력
-
-
-
 
 
         mMap.setOnMarkerClickListener(this);

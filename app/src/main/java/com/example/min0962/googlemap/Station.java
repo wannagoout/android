@@ -1,15 +1,11 @@
 package com.example.min0962.googlemap;
 
-import android.graphics.Movie;
-
-import java.util.ArrayList;
-
 public class Station {
 
     String name;
     double x_location_info;
     double y_location_info;
-    int dust;
+    double dust;
 
 
     public String getName() {
@@ -36,13 +32,13 @@ public class Station {
         this.y_location_info = y_location_info;
     }
 
-    public int getDust() {
+
+    public double getDust() {
         return dust;
     }
 
-    public void setDust(int dust) {
+    public void setDust(double dust) {
         this.dust = dust;
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.example.min0962.googlemap.server;
 
 //메시지를 수신하여 알림으로 보여주는 클래스
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,13 +10,16 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import com.example.min0962.googlemap.MapsActivity;
 import com.example.min0962.googlemap.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+//import android.support.v4.app.NotificationCompat;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MsgService";
