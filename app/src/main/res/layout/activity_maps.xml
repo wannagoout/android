@@ -51,7 +51,7 @@
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             tools:context=".MapsActivity"
 
             />
@@ -123,6 +123,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/incheon_bnt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="인천메뉴로 가기" />
 
             <TextView
                 android:id="@+id/textViewJson"

@@ -1,6 +1,7 @@
 package com.example.min0962.googlemap;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.min0962.googlemap.incheon.IncheonActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -127,7 +129,15 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
+        Button button_inchoen =(Button) findViewById(R.id.incheon_bnt);
+        button_inchoen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), IncheonActivity.class);
+                startActivity(intent);
 
+            }
+        });
         //Location Manager
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
@@ -223,6 +233,7 @@ public class MapsActivity extends FragmentActivity
                     }
                 }
         ) {
+            //만약 post방식으로 할려면, 이거 써야됌
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params=new HashMap<String,String>();
