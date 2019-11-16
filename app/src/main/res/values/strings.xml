@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DustSlide</string>
+    <string name="posturl">"http://ec2-52-78-37-78.ap-northeast-2.compute.amazonaws.com/wannaGoOut/api/dust"</string>
+    <string name="micro">미세먼지</string>
+</resources>

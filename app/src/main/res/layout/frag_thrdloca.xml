@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorJJ">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <!--장소이름-->
+        <TextView
+            android:id="@+id/name_thrd"
+            android:layout_width="wrap_content"
+            android:layout_height="40pt"
+            android:textColor="@color/colorWhite"
+            android:textSize="13pt"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+
+        <!--주소-->
+        <TextView
+            android:text="THIRD"
+            android:id="@+id/Addr_thrd"
+            android:layout_width="match_parent"
+            android:layout_height="30pt"
+            android:textSize="13pt"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <!--아이콘-->
+        <ImageView
+            android:id="@+id/dustIC"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            />
+        <!--미세먼지이다-->
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/micro_thrd"
+            android:layout_height="25pt"
+            android:text="@string/micro"
+            android:textColor="@color/colorWhite"
+            android:textSize="10pt"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"/>
+        <!--        <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dust_P"
+                    android:textSize="15pt"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="3"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>-->
+        <!--미세먼지값-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20pt"
+            android:id="@+id/dustVal_thrd"
+            android:textColor="@color/colorWhite"
+            android:textSize="10pt"
+            android:gravity="center"/>
+        <!--android:layout_weight="1"-->
+
+        <!--미세먼지 상태-->
+        <TextView
+            android:id="@+id/dustState_thrd"
+            android:layout_width="match_parent"
+            android:layout_height="20pt"
+            android:textColor="@color/colorWhite"
+            android:textSize="10pt"
+            android:gravity="center"/>
+        <!--//조건값 걸고 수치 이하면 얼마//지금은 임의-->
+
+    </LinearLayout>
+</RelativeLayout>
