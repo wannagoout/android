@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "935227742146",
+    "firebase_url": "https://wannagoout.firebaseio.com",
+    "project_id": "wannagoout",
+    "storage_bucket": "wannagoout.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935227742146:android:f3aa2649bc8ac31f",
+        "android_client_info": {
+          "package_name": "com.example.min0962.googlemap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935227742146-hpi0qr3qpjkl7kkmukf1oe3ari7t5f4q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.min0962.googlemap",
+            "certificate_hash": "e44bc9263b672aa9092a88381d4b8c53d1ddfd46"
+          }
+        },
+        {
+          "client_id": "935227742146-3bp37kr343ihn787nv280f4mb9g84ugj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5JZeVe-f_t8ql-tw0IXy2ncong3c5fDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935227742146-3bp37kr343ihn787nv280f4mb9g84ugj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

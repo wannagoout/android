@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="693dp"
+        android:layout_height="408dp"
+        android:background="@drawable/dust2"
+        tools:layout_editor_absoluteX="-152dp"
+        tools:layout_editor_absoluteY="180dp"></ImageView>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        tools:layout_editor_absoluteX="246dp">
+
+    </Button>
+
+    <Button
+        android:id="@+id/incheon"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.588"
+        tools:layout_editor_absoluteX="143dp">
+
+    </Button>
+
+    <Button
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.371"
+        tools:layout_editor_absoluteX="133dp">
+
+    </Button>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
