@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dust_map"
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="@string/dust_map" />
+ <!--       <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_gallery" />
+            -->
+        <item
+            android:id="@+id/dust_now"
+            android:icon="@drawable/ic_dust"
+            android:title="@string/dust_now" />
+        <item
+            android:id="@+id/dust_set"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/dust_set" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/menu_share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_send_black_24dp"
+                android:title="@string/menu_send" />
+        </menu>
+    </item>
+
+</menu>
