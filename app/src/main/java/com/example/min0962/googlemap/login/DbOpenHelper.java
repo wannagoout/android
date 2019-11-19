@@ -38,19 +38,19 @@ public class DbOpenHelper {
         }
     }
 
-        public DbOpenHelper(Context context)
-        {
-            this.mCtx = context;
-        }
-        public DbOpenHelper open() throws SQLException {
-            mDBHelper = new DataBaseHelper(mCtx, DatabaseName, null, Database_Version);
-            mDB = mDBHelper.getWritableDatabase();
-            return this;
-        }
-        public void close()
-        {
-            mDB.close();
-        }
+    public DbOpenHelper(Context context)
+    {
+        this.mCtx = context;
+    }
+    public DbOpenHelper open() throws SQLException {
+        mDBHelper = new DataBaseHelper(mCtx, DatabaseName, null, Database_Version);
+        mDB = mDBHelper.getWritableDatabase();
+        return this;
+    }
+    public void close()
+    {
+        mDB.close();
+    }
     public long insertColumn(String id, String ps, String micro, String chomicro) {
         ContentValues values = new ContentValues();
         values.put(database.CreateDB.ID, id);

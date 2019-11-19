@@ -55,9 +55,6 @@
         </activity>
 
         <activity android:name=".login.address"/>
-        <activity android:name=".login.custom" />
-        <activity android:name=".login.baby" />
-        <activity android:name=".login.normal" />
         <activity android:name=".login.setting" />
         <activity android:name=".MapsActivity" />
         <activity android:name=".incheon.IncheonActivity" />
