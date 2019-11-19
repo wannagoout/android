@@ -322,14 +322,14 @@ public class MapsActivity extends FragmentActivity
 
             }
 
-            else{
-                if(pdust> micro) //미세먼지수치가 높은경우
-                    mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                else //미세먼지수치가 낮은경
-                    mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+ //           else{
+   //             if(pdust> micro) //미세먼지수치가 높은경우
+     //               mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+       //         else //미세먼지수치가 낮은경
+         //           mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
 
-            }
+//            }
 
 
             gpsArray.add(new GpsLists(px,py));

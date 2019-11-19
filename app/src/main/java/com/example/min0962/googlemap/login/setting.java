@@ -2,6 +2,8 @@ package com.example.min0962.googlemap.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,27 +30,31 @@ public class setting extends AppCompatActivity {
         final Button butB = (Button) findViewById(R.id.baby);
         final Button butC = (Button) findViewById(R.id.custom);
         final TextView text = (TextView) findViewById(R.id.explain);
+        final TextView Cs = (TextView) findViewById(R.id.Custom);
         Button but = (Button) findViewById(R.id.next);
         butN.setFocusableInTouchMode(true);
         butB.setFocusableInTouchMode(true);
         butC.setFocusableInTouchMode(true);
+        Constants.setting = "0";
 
         butN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                setting = "1";
+                Constants.setting = "80";
                 text.setText("일반에 대한 설명");
                 butN.requestFocus();
+                Cs.setVisibility(View.INVISIBLE);
             }
         });
         butB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                setting = "2";
+                Constants.setting = "50";
                 text.setText("노약자에 대한 설명");
                 butB.requestFocus();
+                Cs.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -56,9 +62,10 @@ public class setting extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                setting = "3";
-                text.setText("커스텀에 대한 설명");
+                text.setText("숫자를 입력해주세요");
                 butC.requestFocus();
+                Constants.setting = "1";
+                Cs.setVisibility(View.VISIBLE);
 
             }
         });
@@ -66,10 +73,48 @@ public class setting extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(getApplicationContext(), address.class);
-                startActivity(intent);
+                if(Constants.setting == "0")
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(setting.this);
+                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();     //닫기
+                        }
+                    });
+                    alert.setMessage("하나 이상의 버튼을 선택해주세요.");
+                    alert.show();
+                }
+                else
+                {
+                    String str;
+                    str = Cs.getText().toString();
+                    if(Constants.setting == "1") {
+                        if (str.length() == 0) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(setting.this);
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();     //닫기
+                                }
+                            });
+                            alert.setMessage("값을 입력해주세요.");
+                            alert.show();
 
-                //mDbOpenHelper.insertColumn(ID,PS,setting);
+                        } else {
+                            Constants.setting = Cs.getText().toString();
+                            Intent intent = new Intent(getApplicationContext(), address.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                    else{
+                        Intent intent = new Intent(getApplicationContext(), address.class);
+                        startActivity(intent);
+                    }
+
+                }
+
             }
         });
 

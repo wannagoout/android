@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private String str;
     private String strid;
     private String strps;
+    private String usrid;
+    private String usrps;
 
 
 
@@ -50,10 +52,7 @@ public class MainActivity extends AppCompatActivity {
         editTextID = (EditText) findViewById(R.id.ID);
         editTextPS = (EditText) findViewById(R.id.Password);
         Button button = (Button) findViewById(R.id.Next);
-        if(AutoLogin.getID(MainActivity.this).length() == 0)
-        {
-        }
-        else
+        if(AutoLogin.getID(MainActivity.this).length() != 0 && AutoLogin.getPS(MainActivity.this).length() != 0)
         {
             Intent intent  = new Intent(getApplicationContext(), setting.class);
             str = AutoLogin.getID(MainActivity.this);
@@ -61,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
             str = AutoLogin.getPS(MainActivity.this);
             editTextPS.setText(str);
             startActivity(intent);
+        }
+        else
+        {
+
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     Constants.ID = editTextID.getText().toString().trim();
                     Constants.PS = editTextPS.getText().toString().trim();
                     AutoLogin.setLogin(MainActivity.this,Constants.ID, Constants.PS);
-                    Intent intent = new Intent(getApplicationContext(), setting.class);
+                    Intent intent = new Intent(getApplicationContext(), setting.class); //넘어갈 페이지 정해주기!!
                     startActivity(intent);
 
                 }

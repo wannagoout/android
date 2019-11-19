@@ -16,8 +16,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.min0962.googlemap.R;
 
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.NameValuePair;
+import cz.msebera.android.httpclient.client.ClientProtocolException;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
+
 
 public class address extends AppCompatActivity {
 
@@ -61,13 +77,14 @@ public class address extends AppCompatActivity {
                     } else {
                         tv.setVisibility(View.INVISIBLE);
                         Address addr = list.get(0);
-                        double addr_x = addr.getLatitude();
-                        double addr_y = addr.getLongitude();
-                        mDbOpenHelper.insertColumn2(addr_x,addr_y);
+                        Constants.addr_x = addr.getLatitude();
+                        Constants.addr_y = addr.getLongitude();
+                        mDbOpenHelper.insertColumn2(Constants.addr_x,Constants.addr_y);
                         mDbOpenHelper.insertColumn(Constants.ID,Constants.PS,Constants.micro, Constants.chomicro);
+                        select_doProcess();
                         String temp = "{\"usrId\""+":"+"\""+Constants.ID+"\""+","+"\"usrPs\""+":"+"\""+Constants.PS+"\""+","+
                                 "\"usrToken\""+":"+"\""+Constants.Token+"\""+","+"\"usrSetting\""+":"+"\""+Constants.setting+"\""+","+
-                                "\"usrAddrX\""+":"+"\""+addr_x+"\""+","+"\"usrAddrY\""+":"+"\""+addr_y+"\""+"}";
+                                "\"usrAddrX\""+":"+"\""+Constants.addr_x+"\""+","+"\"usrAddrY\""+":"+"\""+Constants.addr_y+"\""+"}";
                         //Intent intent = new Intent(getApplicationContext(), Fin.class); //넘어갈 페이지 입력
                         //startActivity(intent);
                     }
@@ -114,5 +131,41 @@ public class address extends AppCompatActivity {
 
         });
     }
-
+    private void select_doProcess() //서버로 보내는 부분
+    {
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post =new HttpPost("");
+        ArrayList <NameValuePair> SendData = new ArrayList<NameValuePair>();
+        try {
+            SendData.add(new BasicNameValuePair("usrId", URLDecoder.decode(Constants.ID, "UTF-8")));
+            SendData.add(new BasicNameValuePair("usrPs", URLDecoder.decode(Constants.PS, "UTF-8")));
+            SendData.add(new BasicNameValuePair("usrToken", URLDecoder.decode(Constants.Token, "UTF-8")));
+            SendData.add(new BasicNameValuePair("usrSetting", URLDecoder.decode(Constants.setting, "UTF-8")));
+            SendData.add(new BasicNameValuePair("usrAddrX", URLDecoder.decode("\""+Constants.addr_x+"\"", "UTF-8")));
+            SendData.add(new BasicNameValuePair("usrAddrY", URLDecoder.decode("\""+Constants.addr_y+"\"", "UTF-8")));
+            post.setEntity(
+                    new UrlEncodedFormEntity(
+                            SendData, "UTF-8"));
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            Log.e("Insert log", ex.toString());
+        }
+        try {
+            HttpResponse response = client.execute(post);
+            Log.i("insert log", "response.getStatusCode:" + response.getStatusLine().getStatusCode());
+        }
+        catch (ClientProtocolException e)
+        {
+            e.printStackTrace();
+        }
+        catch(MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }
