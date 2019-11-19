@@ -291,6 +291,7 @@ public class MapsActivity extends FragmentActivity
 
 
 
+        double micro_num = Double.parseDouble(Constants.setting);
 
 
         for(int i=0; i<stationList.location.size();i++)
@@ -311,7 +312,6 @@ public class MapsActivity extends FragmentActivity
                     getApplicationContext(),
                     "Micro는"+micro,
                     Toast.LENGTH_LONG).show();
-
 
 
 
