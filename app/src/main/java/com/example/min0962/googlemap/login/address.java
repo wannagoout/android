@@ -14,10 +14,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.min0962.googlemap.MapsActivity;
 import com.example.min0962.googlemap.R;
-
-import org.xml.sax.helpers.DefaultHandler;
+import com.example.min0962.googlemap.dust.DustActivity;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -86,7 +84,7 @@ public class address extends AppCompatActivity {
                         String temp = "{\"usrId\""+":"+"\""+Constants.ID+"\""+","+"\"usrPs\""+":"+"\""+Constants.PS+"\""+","+
                                 "\"usrToken\""+":"+"\""+Constants.Token+"\""+","+"\"usrSetting\""+":"+"\""+Constants.setting+"\""+","+
                                 "\"usrAddrX\""+":"+"\""+Constants.addr_x+"\""+","+"\"usrAddrY\""+":"+"\""+Constants.addr_y+"\""+"}";
-                        Intent intent = new Intent(getApplicationContext(), MapsActivity.class); //넘어갈 페이지 입력
+                        Intent intent = new Intent(getApplicationContext(), DustActivity.class); //넘어갈 페이지 입력
                         startActivity(intent);
                     }
                 }
