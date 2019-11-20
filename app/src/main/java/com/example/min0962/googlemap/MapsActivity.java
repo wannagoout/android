@@ -33,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.min0962.googlemap.incheon.IncheonActivity;
+import com.example.min0962.googlemap.login.Constants;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -287,6 +288,7 @@ public class MapsActivity extends FragmentActivity
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
 
+        double micro_num = Double.parseDouble(Constants.setting);
 
 
 
@@ -323,7 +325,7 @@ public class MapsActivity extends FragmentActivity
             }
 
             else{
-                if(pdust> micro) //미세먼지수치가 높은경우
+                if(pdust> micro_num) //미세먼지수치가 높은경우
                     mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 else //미세먼지수치가 낮은경
                     mMap.addMarker(new MarkerOptions().position(tempStation).title(pname).snippet(stringdust).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));

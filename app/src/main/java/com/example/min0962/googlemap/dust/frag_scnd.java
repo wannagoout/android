@@ -1,13 +1,15 @@
 package com.example.min0962.googlemap.dust;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.min0962.googlemap.R;
 
 public class frag_scnd extends Fragment {
@@ -24,7 +26,7 @@ public class frag_scnd extends Fragment {
        /* ViewGroup rootView=(ViewGroup) inflater.inflate(R.layout.frag_scndloca,container,false);
         return rootView;*/
         RelativeLayout layout=(RelativeLayout)inflater.inflate(
-                R.layout.frag_scndloca,container,false);
+                R.layout.frag_nowloca,container,false);
         return layout;
     }
     public void getData(String name, String addr, int val) {

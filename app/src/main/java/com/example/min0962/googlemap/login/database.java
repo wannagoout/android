@@ -15,10 +15,10 @@ public class database {
         public static final String addr_y = "addr_y";
         public static final String Create =
                 "create table if not exists " + TableName+ "("
-                + ID+ "text "
-                + PS+ "text "
-                + micro+ "text "
-                + chomicro+ "text );";
+                        + ID+ "text "
+                        + PS+ "text "
+                        + micro+ "text "
+                        + chomicro+ "text );";
         public static final String Create2 =
                 "create table if not exists " + TableName2+ "("
                         + addr_x+ "text "

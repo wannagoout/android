@@ -1,6 +1,7 @@
 package com.example.min0962.googlemap.dust;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,20 +9,19 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-import com.google.android.material.navigation.NavigationView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.drawerlayout.widget.*;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,7 +30,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.min0962.googlemap.GpsInfo;
+import com.example.min0962.googlemap.MapsActivity;
 import com.example.min0962.googlemap.R;
+import com.example.min0962.googlemap.login.Constants;
+import com.example.min0962.googlemap.login.MainActivity;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,17 +62,15 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
 
     private static ArrayList<String> addr_geo = new ArrayList<>();
     private static ArrayList<String> addr_name = new ArrayList<>();
-    private static List<Integer> dust_val;
-    private static List<String> dust_state;
-
+    private static List<Double> dust_val;
+    private static ArrayList<String> dust_state;
+    public ArrayList<JSLocation> LocaList = new ArrayList<>();
     private GpsInfo gps;
     JSONObject item=new JSONObject();
+    Gson gson=new Gson();
 
     private ViewPager mpager;
 
-    class JSLocation{
-        double x; double y;
-    }//x, y값 저장할 객체
     JSLocation nowlocation= new JSLocation();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,17 +105,27 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onLocationChanged(Location location) {
                 gps=new GpsInfo(DustActivity.this);
-                if(gps.isGetLocation()){
+                if (gps.isGetLocation()) {
                     latitude = gps.getLatitude();
                     longitude = gps.getLongitude();
-                    String tmp = getAddr(longitude,latitude);
-                    TextView tv=(TextView)findViewById(R.id.Addr_now);
-                    tv.setText(tmp);
+
                     nowlocation.x=latitude;
                     nowlocation.y=longitude;
-//DB랑 합쳐서 JSON 형태로 보내기
-                }else{
-                    gps.showSettingsAlert();
+
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert(); //gps사용허가할 수 있는 창을 만들어주고 허가하면 서비스한다
+                    if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                    {
+                        latitude = gps.getLatitude();
+                        longitude = gps.getLongitude();
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,
+                                Toast.LENGTH_LONG).show();
+                        nowlocation.x=latitude;
+                        nowlocation.y=longitude;
+                    }
                 }
 
             }
@@ -125,14 +139,13 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
             public void onProviderDisabled(String provider) {
             }
         };
-
-//        DB에서 x, y 값 가져와서 지오코딩 및 JSON 변환
+        LocaList.add(nowlocation);
+//        shared에서 x, y 값 가져와서 지오코딩 및 JSON 변환
         //x,y 를 갖는 LocaList에 추가하고 db수만큼 추가 최대3
 
 
-        ArrayList<JSLocation> LocaList = new ArrayList<>();
-        LocaList.add(nowlocation);
-        JSLocation db1 = new JSLocation();
+
+
         JSONArray jArray=new JSONArray();
         //////////////db주소값
         //       addr_name.add(//db에서 가져옴)
@@ -200,16 +213,16 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.dust_map) {
-            /*Intent intent=new Intent(getApplicationContext(), MyActivity.class);
+            Intent intent=new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent);
-            nv.setCheckedItem(R.id.dust_now);*/
+            nv.setCheckedItem(R.id.dust_now);
         } else if (id == R.id.dust_now) {
             /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new NowFrag()).commit();*/
         } else if (id == R.id.dust_set) {
-            /*Intent intent=new Intent(getApplicationContext(), MyActivity.class);
+            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-            nv.setCheckedItem(R.id.dust_now);*/
+            nv.setCheckedItem(R.id.dust_now);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -289,7 +302,7 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
             Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
             return "주소 미발견";
         }
-        String tmp=addr_lists.get(0).getLocality() + " " + addr_lists.get(0).getThoroughfare();
+        String tmp=addr_lists.get(0).getAddressLine(0);
         addr_geo.add(tmp);
 /*        StringBuilder sb = new StringBuilder();
 //        sb.append(addr_lists.get(0).getAdminArea()+" ");
@@ -303,62 +316,55 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
         StringRequest postStringRequest = new StringRequest(Request.Method.POST, "http://ec2-52-78-37-78.ap-northeast-2.compute.amazonaws.com/wannaGoOut/api/dust",
                 new Response.Listener<String>() {
                     public void onResponse(String response) {
-
+                        //data parsing
+                        dataparsing(response);
                     }
                 }, new Response.ErrorListener() {
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getApplicationContext(), "값을 받아 올 수 없습니다.", Toast.LENGTH_LONG).show();
+                Log.d("server error","["+error.getMessage()+"]");
             }
 
         }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("username", "Jay");
-                params.put("password", "1234");
+                for(int i=0;i<LocaList.size();i++) {
+                    params.put("x", String.valueOf(LocaList.get(i).x));
+                    params.put("y", String.valueOf(LocaList.get(i).y));
+                    String sendto=gson.toJson(LocaList);
+                }
                 return params;
             }
         };
         postReqeustQueue.add(postStringRequest);
     }
-    public void sendSer(JSONArray jsonArray){
-       /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String apiURL = "http://ec2-52-78-37-78.ap-northeast-2.compute.amazonaws.com/wannaGoOut/api/dust";
-                    URL url = new URL(apiURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestProperty("Content-Type","application/json");
-                    conn.setRequestMethod("POST");
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
-                    BufferedReader br = null;
-                    String json=null;
-                    br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    public void dataparsing(String str){
+        DustRes dustRes = gson.fromJson(str,DustRes.class); //Json으로 받아온걸 StationListResult 객체로 바꿔주라
 
-                    //받아옴
-                    String inputdata;
-                    StringBuffer respon=new StringBuffer();
-                    while((inputdata = br.readLine())!=null){
-                        respon.append(inputdata);
-                    }
-                    br.close();
-                    json = respon.toString();
+        int cnt=dustRes.reslist.size();
 
-                    if(json==null)
-                        return;
-                    JSONObject addobj = new JSONObject(json);
-                    JSONArray dataArray = addobj.getJSONArray("gpsList");
-                    //대괄호 분리
-                    JSONObject area1Object = (JSONObject) addobj.get("x");
-                    JSONObject area2Object = (JSONObject) addobj.get("y");
+        //x,y값을 gpsList에 넣는 String이다.
+        List<JSLocation> gpsArray=new ArrayList<JSLocation>();
+        // 위에꺼 안되면 이걸로 해보자 ArrayList<GpsLists> a=new ArrayList<GpsLists>();
+        double micro_num = Double.parseDouble(Constants.setting);
 
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
 
-            }
-        }).start();*/
+        for(int i=0; i<cnt;i++)
+        {
+
+            String pname=dustRes.reslist.get(i).name;
+            double px=dustRes.reslist.get(i).x_location_info;
+            double py=dustRes.reslist.get(i).y_location_info;
+
+            double pdust=dustRes.reslist.get(i).dust;
+            String stringdust= Double.toString(pdust);
+
+            LatLng tempStation = new LatLng(px , py); //측정소 위치값
+            dust_val.add(pdust);
+
+        }
+        //String gps_results=gson.toJson(new GpsListClass(gpsArray));
     }
+
 }
