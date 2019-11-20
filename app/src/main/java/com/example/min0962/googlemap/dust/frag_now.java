@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.min0962.googlemap.R;
 
-
-public class frag_now extends Fragment {
     //public TextView tv;
+public class frag_now extends Fragment {
+   //public TextView tv;
 
     public String addrn, callname, staten;
     public double dustval;

@@ -28,7 +28,8 @@ public class frag_fst extends Fragment {
                 R.layout.frag_nowloca,container,false);
         return layout;
     }
-    public void getData(String name, String addr, int val) {
+
+    public void getData(String name, String addr, double val) {
         tv = (TextView) view.findViewById(R.id.name_now);
         tv.setText(name);
         tv = (TextView) view.findViewById(R.id.Addr_now);

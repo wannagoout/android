@@ -287,12 +287,7 @@ public class MapsActivity extends FragmentActivity
         BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.marker);
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
-
         double micro_num = Double.parseDouble(Constants.setting);
-
-
-
-
 
         for(int i=0; i<stationList.location.size();i++)
         {
@@ -312,7 +307,6 @@ public class MapsActivity extends FragmentActivity
                     getApplicationContext(),
                     "Micro는"+micro,
                     Toast.LENGTH_LONG).show();
-
 
 
 

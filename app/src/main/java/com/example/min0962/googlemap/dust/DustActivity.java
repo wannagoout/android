@@ -316,7 +316,6 @@ public class DustActivity extends AppCompatActivity implements  NavigationView.O
         StringRequest postStringRequest = new StringRequest(Request.Method.POST, "http://ec2-52-78-37-78.ap-northeast-2.compute.amazonaws.com/wannaGoOut/api/dust",
                 new Response.Listener<String>() {
                     public void onResponse(String response) {
-                        //data parsing
                         dataparsing(response);
                     }
                 }, new Response.ErrorListener() {
